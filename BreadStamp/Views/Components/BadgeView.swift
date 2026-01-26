@@ -52,63 +52,66 @@ struct AchievementGuideSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: Spacing.xl) {
-                ZStack {
-                    Circle()
-                        .fill(achievement.isUnlocked ? Color.brandPrimary : Color.gray.opacity(0.2))
-                        .frame(width: 100, height: 100)
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
 
-                    Image(systemName: achievement.iconName)
-                        .font(.system(size: 44))
-                        .foregroundStyle(achievement.isUnlocked ? .white : Color.textSecondary)
-                }
+                VStack(spacing: Spacing.xl) {
+                    ZStack {
+                        Circle()
+                            .fill(achievement.isUnlocked ? Color.brandPrimary : Color.gray.opacity(0.2))
+                            .frame(width: 100, height: 100)
 
-                VStack(spacing: Spacing.sm) {
-                    Text(achievement.title)
-                        .font(.appLargeTitle)
-                        .foregroundStyle(Color.textPrimary)
-
-                    Text(achievement.description)
-                        .font(.appBody)
-                        .foregroundStyle(Color.textSecondary)
-                }
-
-                if achievement.isUnlocked {
-                    HStack(spacing: Spacing.xs) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(Color.success)
-                        Text("달성 완료!")
-                            .font(.appHeadline)
-                            .foregroundStyle(Color.success)
+                        Image(systemName: achievement.iconName)
+                            .font(.system(size: 44))
+                            .foregroundStyle(achievement.isUnlocked ? .white : Color.textSecondary)
                     }
-                    .padding(Spacing.md)
-                    .background(
-                        RoundedRectangle(cornerRadius: CornerRadius.md)
-                            .fill(Color.success.opacity(0.1))
-                    )
-                } else {
+
                     VStack(spacing: Spacing.sm) {
-                        Text("달성 가이드")
-                            .font(.appHeadline)
+                        Text(achievement.title)
+                            .font(.appLargeTitle)
                             .foregroundStyle(Color.textPrimary)
 
-                        Text(achievement.guide)
+                        Text(achievement.description)
                             .font(.appBody)
                             .foregroundStyle(Color.textSecondary)
-                            .multilineTextAlignment(.center)
                     }
-                    .padding(Spacing.lg)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: CornerRadius.md)
-                            .fill(Color.surface)
-                    )
-                }
 
-                Spacer()
+                    if achievement.isUnlocked {
+                        HStack(spacing: Spacing.xs) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(Color.success)
+                            Text("달성 완료!")
+                                .font(.appHeadline)
+                                .foregroundStyle(Color.success)
+                        }
+                        .padding(Spacing.md)
+                        .background(
+                            RoundedRectangle(cornerRadius: CornerRadius.md)
+                                .fill(Color.success.opacity(0.1))
+                        )
+                    } else {
+                        VStack(spacing: Spacing.sm) {
+                            Text("달성 가이드")
+                                .font(.appHeadline)
+                                .foregroundStyle(Color.textPrimary)
+
+                            Text(achievement.guide)
+                                .font(.appBody)
+                                .foregroundStyle(Color.textSecondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(Spacing.lg)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: CornerRadius.md)
+                                .fill(Color.surface)
+                        )
+                    }
+
+                    Spacer()
+                }
+                .padding(Spacing.xl)
             }
-            .padding(Spacing.xl)
-            .background(Color.appBackground.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -116,6 +119,7 @@ struct AchievementGuideSheet: View {
                         .foregroundStyle(Color.brandPrimary)
                 }
             }
+            .toolbarBackground(Color.appBackground, for: .navigationBar)
         }
     }
 }
