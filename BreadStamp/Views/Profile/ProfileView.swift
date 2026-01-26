@@ -7,7 +7,7 @@ struct ProfileView: View {
     @Query private var breads: [Bread]
 
     private var stats: StatisticsService.Stats {
-        StatisticsService.calculate(bakeries: bakeries, breads: breads)
+        StatisticsCacheService.shared.stats(bakeries: bakeries, breads: breads)
     }
 
     private var achievements: [Achievement] {

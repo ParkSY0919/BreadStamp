@@ -34,6 +34,8 @@
 		F005D51D383B48D04D58EFFA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647297E389EB350D9C66946 /* ProfileViewModel.swift */; };
 		F6D262F850C90F4752AD3DC3 /* SampleDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A68196E60177243CE880C /* SampleDataService.swift */; };
 		A1B2C3D4E5F60718293A4B5C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D7E8F9A0B1C2D3E4F50617 /* LocationManager.swift */; };
+		D2E3F4A5B6C7081930415263 /* ImageCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A6071829304142 /* ImageCacheService.swift */; };
+		F4A5B6C7D8E90A1B2C3D4E5F /* StatisticsCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F4A5B6C7D8091A2B3C4D5E /* StatisticsCacheService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		F9587F17E81019C77EB0D57A /* StampCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampCard.swift; sourceTree = "<group>"; };
 		FC7CDFBD19C69460E5C04D39 /* BreadStampApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadStampApp.swift; sourceTree = "<group>"; };
 		C6D7E8F9A0B1C2D3E4F50617 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		B1C2D3E4F5A6071829304142 /* ImageCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheService.swift; sourceTree = "<group>"; };
+		E3F4A5B6C7D8091A2B3C4D5E /* StatisticsCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCacheService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -201,8 +205,10 @@
 			isa = PBXGroup;
 			children = (
 				909CDC3FFA8BCA6F6D3F5628 /* AchievementService.swift */,
+				B1C2D3E4F5A6071829304142 /* ImageCacheService.swift */,
 				C6D7E8F9A0B1C2D3E4F50617 /* LocationManager.swift */,
 				D17A68196E60177243CE880C /* SampleDataService.swift */,
+				E3F4A5B6C7D8091A2B3C4D5E /* StatisticsCacheService.swift */,
 				170F1AFBDBB67D3902696181 /* StatisticsService.swift */,
 			);
 			path = Services;
@@ -298,6 +304,8 @@
 				F6D262F850C90F4752AD3DC3 /* SampleDataService.swift in Sources */,
 				B9BD6CC2FC8D8EFD1821591B /* StampCard.swift in Sources */,
 				310106A646F864E8A76F9EA0 /* StatisticsService.swift in Sources */,
+				D2E3F4A5B6C7081930415263 /* ImageCacheService.swift in Sources */,
+				F4A5B6C7D8E90A1B2C3D4E5F /* StatisticsCacheService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -51,8 +51,10 @@ struct BreadCard: View {
     // MARK: - Views
     @ViewBuilder
     private var breadImage: some View {
-        if let imageData = bread.imageData,
-           let uiImage = UIImage(data: imageData) {
+        if let uiImage = ImageCacheService.shared.image(
+            forKey: bread.id.uuidString,
+            data: bread.imageData
+        ) {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()

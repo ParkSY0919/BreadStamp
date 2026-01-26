@@ -324,10 +324,18 @@ struct AddBakerySheet: View {
 }
 
 // MARK: - Address Search Completer
+/// MKLocalSearchCompleter 래퍼 + 300ms Debounce
+///
+/// Debounce 적용 이유:
+/// - MKLocalSearchCompleter는 queryFragment 변경마다 Apple 서버에 네트워크 요청 발생
+/// - 사용자가 "서울시 강남구"를 입력할 때 매 글자마다 요청하면 7회 호출
+/// - 300ms debounce 적용 시 타이핑 완료 후 1회만 호출 → 네트워크 비용 ~85% 절감
+/// - Apple Geocoding API는 rate limit(분당 50회)이 있어 과도한 호출 시 실패 가능
 @Observable
 final class AddressSearchCompleter: NSObject, MKLocalSearchCompleterDelegate {
     private let completer = MKLocalSearchCompleter()
     var onUpdate: (([MKLocalSearchCompletion]) -> Void)?
+    private var debounceTask: Task<Void, Never>?
 
     override init() {
         super.init()
@@ -340,7 +348,12 @@ final class AddressSearchCompleter: NSObject, MKLocalSearchCompleterDelegate {
     }
 
     func search(query: String) {
-        completer.queryFragment = query
+        debounceTask?.cancel()
+        debounceTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(300))
+            guard !Task.isCancelled else { return }
+            completer.queryFragment = query
+        }
     }
 
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
@@ -348,7 +361,7 @@ final class AddressSearchCompleter: NSObject, MKLocalSearchCompleterDelegate {
     }
 
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        // 검색 실패 무시
+        // 검색 실패 시 무시 (네트워크 불안정 등)
     }
 }
 

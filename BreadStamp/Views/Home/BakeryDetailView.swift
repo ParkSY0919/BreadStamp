@@ -44,8 +44,10 @@ struct BakeryDetailView: View {
     // MARK: - Views
     private var header: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            if let imageData = bakery.imageData,
-               let uiImage = UIImage(data: imageData) {
+            if let uiImage = ImageCacheService.shared.image(
+                forKey: bakery.id.uuidString,
+                data: bakery.imageData
+            ) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
