@@ -26,7 +26,7 @@ struct ProfileView: View {
         achievements.filter { $0.isUnlocked }.count
     }
 
-    private let badgeColumns = Array(repeating: GridItem(.flexible()), count: 4)
+    private let badgeColumns = Array(repeating: GridItem(.flexible(), spacing: Spacing.sm), count: 3)
 
     // MARK: - Body
     var body: some View {
@@ -126,11 +126,9 @@ struct ProfileView: View {
             Spacer()
         }
         .padding(Spacing.lg)
-        .background(
-            RoundedRectangle(cornerRadius: CornerRadius.md)
-                .fill(Color.surface)
-                .shadowSm()
-        )
+        .background(Color.surface)
+        .cornerRadius(CornerRadius.md)
+        .shadowSm()
     }
 
     private var categoryBreakdownSection: some View {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,6 +32,7 @@
 		EAC5651DDEAD482DC899AC2B /* BreadCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BB55A3990BC4E2778EFD1 /* BreadCard.swift */; };
 		EC120ECF31BAFDF419BA5AE2 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922A0FC0A39876055C6358DD /* CollectionView.swift */; };
 		F005D51D383B48D04D58EFFA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647297E389EB350D9C66946 /* ProfileViewModel.swift */; };
+		F6D262F850C90F4752AD3DC3 /* SampleDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A68196E60177243CE880C /* SampleDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +45,7 @@
 		3246FAFF45E7E0BCC6B90C04 /* Bread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bread.swift; sourceTree = "<group>"; };
 		38FE05A8CAD3ACC0C85E4947 /* AddBreadSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBreadSheet.swift; sourceTree = "<group>"; };
 		503C5B64716735B4A21536A2 /* BakeryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakeryViewModel.swift; sourceTree = "<group>"; };
-		5C384B3C348EC83CD57EE31F /* BreadStamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreadStamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C384B3C348EC83CD57EE31F /* BreadStamp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BreadStamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634EEC3D1A37687BF4BC4C84 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		87C164B3C71857D3D498ADD6 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		909CDC3FFA8BCA6F6D3F5628 /* AchievementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementService.swift; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		B83BB55A3990BC4E2778EFD1 /* BreadCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadCard.swift; sourceTree = "<group>"; };
 		BA84824474E66B8708932C28 /* AddBakerySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBakerySheet.swift; sourceTree = "<group>"; };
 		CEC72B30C893D66038386327 /* BakeryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakeryDetailView.swift; sourceTree = "<group>"; };
+		D17A68196E60177243CE880C /* SampleDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataService.swift; sourceTree = "<group>"; };
 		D4D91B5123B7D3F876514AC5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D88566BAF5CD6566DFA34324 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D9E431891F6DAE8EC46B8A7B /* BreadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadViewModel.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				909CDC3FFA8BCA6F6D3F5628 /* AchievementService.swift */,
+				D17A68196E60177243CE880C /* SampleDataService.swift */,
 				170F1AFBDBB67D3902696181 /* StatisticsService.swift */,
 			);
 			path = Services;
@@ -231,6 +234,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					175FD6AB8F756FD2120A6BA7 = {
+						DevelopmentTeam = "";
+					};
+				};
 			};
 			buildConfigurationList = FBAD0A3C48440A172B95C9BB /* Build configuration list for PBXProject "BreadStamp" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -242,6 +250,7 @@
 			);
 			mainGroup = 37D566A08FAE1B0C871661C2;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -288,6 +297,7 @@
 				7F9F838669937B1611A2C41F /* MapViewModel.swift in Sources */,
 				5129EB33804E0FAB08C84712 /* ProfileView.swift in Sources */,
 				F005D51D383B48D04D58EFFA /* ProfileViewModel.swift in Sources */,
+				F6D262F850C90F4752AD3DC3 /* SampleDataService.swift in Sources */,
 				B9BD6CC2FC8D8EFD1821591B /* StampCard.swift in Sources */,
 				310106A646F864E8A76F9EA0 /* StatisticsService.swift in Sources */,
 			);
@@ -426,7 +436,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = A95XXD5WT7;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BreadStamp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -444,7 +453,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = A95XXD5WT7;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BreadStamp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -58,6 +58,19 @@ struct MapTabView: View {
                     MapCompass()
                     MapScaleView()
                 }
+                .overlay(alignment: .topLeading) {
+                    if !validBakeries.isEmpty {
+                        Text("빵집 \(validBakeries.count)곳")
+                            .font(.appCaption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.textPrimary)
+                            .padding(.horizontal, Spacing.sm)
+                            .padding(.vertical, Spacing.xs)
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(CornerRadius.sm)
+                            .padding(Spacing.md)
+                    }
+                }
                 .onAppear {
                     updateCameraPosition()
                 }

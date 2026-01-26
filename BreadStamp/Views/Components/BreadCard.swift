@@ -11,27 +11,35 @@ struct BreadCard: View {
             breadImage
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                Text(bread.name)
-                    .font(.appHeadline)
-                    .foregroundStyle(Color.textPrimary)
-                    .lineLimit(1)
+                HStack {
+                    Text(bread.name)
+                        .font(.appBody)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.textPrimary)
+                        .lineLimit(1)
+
+                    Spacer()
+
+                    if let bakery = bread.bakery {
+                        Text(bakery.name)
+                            .font(.appCaption)
+                            .foregroundStyle(Color.textSecondary)
+                            .lineLimit(1)
+                    }
+                }
 
                 ratingRow
 
-                categoryBadge
-            }
+                HStack(spacing: Spacing.sm) {
+                    categoryBadge
 
-            Spacer()
-
-            if let bakery = bread.bakery {
-                VStack(alignment: .trailing, spacing: Spacing.xs) {
-                    Text(bakery.name)
-                        .font(.appCaption)
-                        .foregroundStyle(Color.textSecondary)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.trailing)
+                    if let memo = bread.memo, !memo.isEmpty {
+                        Text(memo)
+                            .font(.appCaption)
+                            .foregroundStyle(Color.textSecondary)
+                            .lineLimit(1)
+                    }
                 }
-                .frame(maxWidth: 80)
             }
         }
         .padding(Spacing.md)
@@ -74,11 +82,11 @@ struct BreadCard: View {
     }
 
     private var categoryBadge: some View {
-        Text(bread.category.rawValue)
+        Text("\(bread.category.icon) \(bread.category.displayName)")
             .font(.appCaption)
             .foregroundStyle(Color.brandPrimary)
             .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.xs)
+            .padding(.vertical, 2)
             .background(Color.brandPrimary.opacity(0.1))
             .cornerRadius(CornerRadius.xs)
     }

@@ -13,11 +13,6 @@ struct CollectionView: View {
         return allBreads.filter { $0.category == category }
     }
 
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
     // MARK: - Body
     var body: some View {
         NavigationStack {
@@ -74,13 +69,14 @@ struct CollectionView: View {
         } label: {
             HStack(spacing: Spacing.xs) {
                 Text(title)
-                    .font(.appCallout)
-                Text("(\(count))")
+                    .font(.appFootnote)
+                Text("\(count)")
                     .font(.appCaption)
             }
             .foregroundStyle(selectedCategory == category ? Color.white : Color.textPrimary)
             .padding(.horizontal, Spacing.md)
             .padding(.vertical, Spacing.sm)
+            .fixedSize()
             .background(
                 RoundedRectangle(cornerRadius: CornerRadius.full)
                     .fill(selectedCategory == category ? Color.brandPrimary : Color.surface)
@@ -90,21 +86,19 @@ struct CollectionView: View {
 
     private var breadList: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.md) {
+            LazyVStack(alignment: .leading, spacing: Spacing.md) {
                 Text("총 \(filteredBreads.count)개의 빵")
                     .font(.appSubhead)
                     .foregroundStyle(Color.textSecondary)
                     .padding(.horizontal, Spacing.lg)
                     .padding(.top, Spacing.sm)
 
-                LazyVGrid(columns: columns, spacing: Spacing.md) {
-                    ForEach(filteredBreads) { bread in
-                        BreadCard(bread: bread)
-                    }
+                ForEach(filteredBreads) { bread in
+                    BreadCard(bread: bread)
+                        .padding(.horizontal, Spacing.lg)
                 }
-                .padding(.horizontal, Spacing.lg)
-                .padding(.bottom, Spacing.xl)
             }
+            .padding(.bottom, Spacing.xl)
         }
     }
 }

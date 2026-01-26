@@ -13,17 +13,24 @@ struct StampCard: View {
             VStack(spacing: Spacing.xs) {
                 Text(bakery.name)
                     .font(.appFootnote)
+                    .fontWeight(.medium)
                     .foregroundStyle(Color.textPrimary)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
                     .multilineTextAlignment(.center)
 
                 if bakery.breadCount > 0 {
                     ratingView
+                } else {
+                    Text("빵 \(bakery.breadCount)개")
+                        .font(.appCaption)
+                        .foregroundStyle(Color.textSecondary)
                 }
             }
         }
-        .frame(width: 140, height: 160)
-        .padding(Spacing.sm)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.md)
+        .padding(.horizontal, Spacing.sm)
         .background(Color.surface)
         .cornerRadius(CornerRadius.md)
         .shadowSm()

@@ -20,6 +20,11 @@ struct BreadStampApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    SampleDataService.insertSampleDataIfNeeded(
+                        context: sharedModelContainer.mainContext
+                    )
+                }
         }
         .modelContainer(sharedModelContainer)
     }

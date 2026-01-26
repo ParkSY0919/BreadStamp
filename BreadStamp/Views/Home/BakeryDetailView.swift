@@ -53,6 +53,7 @@ struct BakeryDetailView: View {
                     Text(bakery.address)
                         .font(.appSubhead)
                         .foregroundStyle(Color.textSecondary)
+                        .lineLimit(2)
 
                     Text(bakery.visitedAt, style: .date)
                         .font(.appFootnote)
