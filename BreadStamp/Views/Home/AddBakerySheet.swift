@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import PhotosUI
 
 struct AddBakerySheet: View {
     // MARK: - Properties
@@ -10,6 +11,8 @@ struct AddBakerySheet: View {
     @State private var name = ""
     @State private var address = ""
     @State private var memo = ""
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var imageData: Data?
 
     // MARK: - Computed Properties
     private var isValid: Bool {
@@ -20,6 +23,14 @@ struct AddBakerySheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    photoSection
+                } header: {
+                    Text("사진 (선택)")
+                        .font(.appCaption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+
                 Section {
                     TextField("빵집 이름", text: $name)
                         .font(.appBody)
@@ -69,6 +80,59 @@ struct AddBakerySheet: View {
         }
     }
 
+    // MARK: - Views
+    private var photoSection: some View {
+        VStack(spacing: Spacing.md) {
+            if let imageData,
+               let uiImage = UIImage(data: imageData) {
+                ZStack(alignment: .topTrailing) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 200)
+                        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md))
+
+                    Button {
+                        self.imageData = nil
+                        self.selectedItem = nil
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.white)
+                            .background(Circle().fill(Color.black.opacity(0.5)))
+                    }
+                    .padding(Spacing.sm)
+                }
+            }
+
+            PhotosPicker(
+                selection: $selectedItem,
+                matching: .images
+            ) {
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: imageData == nil ? "photo.badge.plus" : "photo.fill")
+                        .font(.appBody)
+                    Text(imageData == nil ? "사진 선택" : "사진 변경")
+                        .font(.appBody)
+                }
+                .foregroundStyle(Color.brandPrimary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, Spacing.md)
+                .background(Color.brandPrimary.opacity(0.1))
+                .cornerRadius(CornerRadius.sm)
+            }
+            .onChange(of: selectedItem) { _, newItem in
+                Task {
+                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                        await MainActor.run {
+                            imageData = data
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - Methods
     private func addBakery() {
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
@@ -81,6 +145,7 @@ struct AddBakerySheet: View {
             latitude: 0,
             longitude: 0,
             memo: trimmedMemo.isEmpty ? nil : trimmedMemo,
+            imageData: imageData,
             context: modelContext
         )
 

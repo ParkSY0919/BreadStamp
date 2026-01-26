@@ -10,6 +10,7 @@ final class Bakery {
     var longitude: Double
     var visitedAt: Date
     var memo: String?
+    var imageData: Data?
     var isFavorite: Bool
 
     @Relationship(deleteRule: .cascade, inverse: \Bread.bakery)
@@ -23,7 +24,8 @@ final class Bakery {
         address: String,
         latitude: Double = 0,
         longitude: Double = 0,
-        memo: String? = nil
+        memo: String? = nil,
+        imageData: Data? = nil
     ) {
         self.id = UUID()
         self.name = name
@@ -32,6 +34,7 @@ final class Bakery {
         self.longitude = longitude
         self.visitedAt = Date()
         self.memo = memo
+        self.imageData = imageData
         self.isFavorite = false
         self.createdAt = Date()
         self.updatedAt = Date()

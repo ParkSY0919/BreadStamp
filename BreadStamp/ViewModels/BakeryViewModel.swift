@@ -19,6 +19,7 @@ final class BakeryViewModel {
         latitude: Double,
         longitude: Double,
         memo: String?,
+        imageData: Data?,
         context: ModelContext
     ) {
         isLoading = true
@@ -30,7 +31,8 @@ final class BakeryViewModel {
                 address: address,
                 latitude: latitude,
                 longitude: longitude,
-                memo: memo
+                memo: memo,
+                imageData: imageData
             )
             context.insert(bakery)
             try context.save()

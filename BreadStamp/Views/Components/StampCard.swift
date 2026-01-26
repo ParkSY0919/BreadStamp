@@ -44,8 +44,7 @@ struct StampCard: View {
     // MARK: - Views
     @ViewBuilder
     private var stampImage: some View {
-        if let firstBread = bakery.breads.first,
-           let imageData = firstBread.imageData,
+        if let imageData = bakery.imageData,
            let uiImage = UIImage(data: imageData) {
             Image(uiImage: uiImage)
                 .resizable()

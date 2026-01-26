@@ -44,6 +44,16 @@ struct BakeryDetailView: View {
     // MARK: - Views
     private var header: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
+            if let imageData = bakery.imageData,
+               let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.md))
+            }
+
             HStack {
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     Text(bakery.name)
