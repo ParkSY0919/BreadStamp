@@ -33,11 +33,19 @@ struct CollectionView: View {
                 .padding(.vertical, Spacing.md)
 
             if filteredBreads.isEmpty {
-                EmptyStateView(
-                    icon: "birthday.cake.fill",
-                    title: "아직 기록된 빵이 없어요",
-                    message: "빵집에서 먹은 빵을 기록해보세요!"
-                )
+                if selectedCategory != nil && !allBreads.isEmpty {
+                    EmptyStateView(
+                        icon: "tray.fill",
+                        title: "이 카테고리의 빵이 없어요",
+                        message: "다른 카테고리를 선택하거나\n새로운 빵을 기록해보세요!"
+                    )
+                } else {
+                    EmptyStateView(
+                        icon: "birthday.cake.fill",
+                        title: "아직 기록된 빵이 없어요",
+                        message: "빵집에서 먹은 빵을 기록해보세요!"
+                    )
+                }
             } else {
                 breadList
             }

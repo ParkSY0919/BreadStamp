@@ -133,9 +133,9 @@ flowchart LR
     M3 -->|"@Query 자동 반영"| V2
     V2 -->|"UI 업데이트"| V1
 
-    style View fill:#E8F4FD,stroke:#4A90D9
-    style VM fill:#F0E8FF,stroke:#7B68EE
-    style Model fill:#FFF0F0,stroke:#D0021B
+    style View fill:#4A90D9,color:#fff
+    style VM fill:#7B68EE,color:#fff
+    style Model fill:#C0392B,color:#fff
 ```
 
 ---
@@ -237,13 +237,13 @@ flowchart TB
 
     style App fill:#2D3748,color:#fff
     style CV fill:#4A90D9,color:#fff
-    style T1 fill:#E8F4FD,stroke:#4A90D9
-    style T2 fill:#E8F4FD,stroke:#4A90D9
-    style T3 fill:#E8F4FD,stroke:#4A90D9
-    style T4 fill:#E8F4FD,stroke:#4A90D9
-    style ABS fill:#FFF3E0,stroke:#F5A623
-    style ABRS fill:#FFF3E0,stroke:#F5A623
-    style AGS fill:#FFF3E0,stroke:#F5A623
+    style T1 fill:#3B7DD8,color:#fff
+    style T2 fill:#3B7DD8,color:#fff
+    style T3 fill:#3B7DD8,color:#fff
+    style T4 fill:#3B7DD8,color:#fff
+    style ABS fill:#E8940A,color:#fff
+    style ABRS fill:#E8940A,color:#fff
+    style AGS fill:#E8940A,color:#fff
 ```
 
 ### 빵집 등록 시퀀스
@@ -338,9 +338,9 @@ graph LR
     PV --> AS
     PV --> PrfVM
 
-    style Views fill:#E8F4FD,stroke:#4A90D9
-    style ViewModels fill:#F0E8FF,stroke:#7B68EE
-    style Services fill:#FFF3E0,stroke:#F5A623
+    style Views fill:#4A90D9,color:#fff
+    style ViewModels fill:#7B68EE,color:#fff
+    style Services fill:#E8940A,color:#fff
 ```
 
 ---
@@ -381,6 +381,7 @@ BreadStamp/
 │       └── EmptyStateView.swift     ← 빈 상태 안내
 ├── Services/
 │   ├── AchievementService.swift     ← 업적 조건 판정 로직
+│   ├── LocationManager.swift        ← CLLocationManager 위치 권한 관리
 │   ├── StatisticsService.swift      ← 통계 계산 (카테고리, 평점 등)
 │   └── SampleDataService.swift      ← 첫 실행 더미 데이터 (서울 5곳)
 └── Resources/
@@ -469,8 +470,8 @@ flowchart LR
     AC --> A8
     FS --> A9
 
-    style 조건타입 fill:#FFF3E0,stroke:#F5A623
-    style 업적 fill:#E8F4FD,stroke:#4A90D9
+    style 조건타입 fill:#E8940A,color:#fff
+    style 업적 fill:#3B7DD8,color:#fff
 ```
 
 ### 5. MapKit 카메라 자동 조정
@@ -501,8 +502,8 @@ block-beta
     style P fill:#8B5A2B,color:#fff
     style S fill:#D4A574,color:#fff
     style A fill:#E85A4F,color:#fff
-    style BG fill:#FDF8F3,color:#333
-    style SF fill:#FFFFFF,color:#333,stroke:#ddd
+    style BG fill:#C9B99A,color:#333,stroke:#8B7355
+    style SF fill:#B0A898,color:#333,stroke:#8B7355
 ```
 
 | 토큰 | 라이트 | 다크 | 용도 |
@@ -592,7 +593,8 @@ open BreadStamp.xcodeproj
 
 ## 향후 계획
 
-- [ ] 빵집 위치 검색 (지도 주소 검색)
+- [x] 빵집 위치 검색 (MKLocalSearch 주소 자동완성)
+- [x] 내 위치 표시 (CLLocationManager 연동)
 - [ ] 공유 기능 (통계/배지 이미지 공유)
 - [ ] 빵집/빵 검색
 - [ ] 다크 모드 완전 대응

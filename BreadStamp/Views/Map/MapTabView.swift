@@ -5,6 +5,7 @@ import MapKit
 struct MapTabView: View {
     // MARK: - Properties
     @Query private var bakeries: [Bakery]
+    @State private var locationManager = LocationManager()
 
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
@@ -27,12 +28,15 @@ struct MapTabView: View {
             .navigationTitle("지도")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .onAppear {
+            locationManager.requestPermission()
+        }
     }
 
     // MARK: - Views
     private var mapView: some View {
         ZStack {
-            if bakeries.isEmpty {
+            if validBakeries.isEmpty {
                 EmptyStateView(
                     icon: "map.fill",
                     title: "지도에 표시할 빵집이 없어요",
@@ -51,6 +55,8 @@ struct MapTabView: View {
                         )
                         .tint(bakery.isFavorite ? Color.brandAccent : Color.brandPrimary)
                     }
+
+                    UserAnnotation()
                 }
                 .mapStyle(.standard(elevation: .realistic))
                 .mapControls {
@@ -125,4 +131,3 @@ struct MapTabView: View {
     MapTabView()
         .modelContainer(for: [Bakery.self], inMemory: true)
 }
-

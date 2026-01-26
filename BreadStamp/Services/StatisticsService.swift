@@ -37,9 +37,7 @@ struct StatisticsService {
         }
 
         /// 5점 평가를 받은 빵 개수
-        var fiveStarBreadCount: Int {
-            categoryCounts.values.reduce(0) { $0 + $1 }
-        }
+        let fiveStarBreadCount: Int
     }
 
     // MARK: - Public Methods
@@ -66,6 +64,9 @@ struct StatisticsService {
         // 월별 방문 횟수 계산
         let monthlyVisits = calculateMonthlyVisits(from: bakeries)
 
+        // 5점 빵 개수 계산
+        let fiveStarBreadCount = fiveStarBreadCount(from: breads)
+
         return Stats(
             totalBakeries: totalBakeries,
             totalBreads: totalBreads,
@@ -73,7 +74,8 @@ struct StatisticsService {
             averageRating: averageRating,
             topCategory: topCategory,
             categoryCounts: categoryCounts,
-            monthlyVisits: monthlyVisits
+            monthlyVisits: monthlyVisits,
+            fiveStarBreadCount: fiveStarBreadCount
         )
     }
 
