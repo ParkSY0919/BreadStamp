@@ -31,16 +31,18 @@ struct ProfileView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: Spacing.xl) {
-                    profileHeader
-                    statisticsSection
-                    categoryBreakdownSection
-                    achievementsSection
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+                ScrollView {
+                    VStack(spacing: Spacing.xl) {
+                        profileHeader
+                        statisticsSection
+                        categoryBreakdownSection
+                        achievementsSection
+                    }
+                    .padding(.vertical, Spacing.xl)
                 }
-                .padding(.vertical, Spacing.xl)
             }
-            .background(Color.appBackground)
             .navigationTitle("프로필")
         }
     }

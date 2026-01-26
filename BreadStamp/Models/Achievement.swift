@@ -12,6 +12,19 @@ struct Achievement: Identifiable, Codable {
         unlockedAt != nil
     }
 
+    var guide: String {
+        switch requirement {
+        case .bakeryCount(let count):
+            return "빵집을 \(count)개 방문하면 달성할 수 있어요!\n스탬프북에서 새로운 빵집을 추가해보세요."
+        case .breadCount(let count):
+            return "빵을 \(count)개 기록하면 달성할 수 있어요!\n빵집 상세에서 먹은 빵을 추가해보세요."
+        case .allCategories:
+            return "모든 카테고리의 빵을 기록하면 달성할 수 있어요!\n다양한 종류의 빵을 맛보세요."
+        case .fiveStarBreads(let count):
+            return "5점 만점 빵을 \(count)개 기록하면 달성할 수 있어요!\n최고의 빵을 발견해보세요."
+        }
+    }
+
     static let allAchievements: [Achievement] = [
         Achievement(
             id: "first_stamp",

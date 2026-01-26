@@ -21,9 +21,11 @@ struct CollectionView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            content
-                .navigationTitle("빵 도감")
-                .background(Color.appBackground)
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+                content
+            }
+            .navigationTitle("빵 도감")
         }
     }
 

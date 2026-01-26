@@ -12,15 +12,17 @@ struct BakeryDetailView: View {
 
     // MARK: - Body
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.xl) {
-                header
-                statistics
-                breadSection
+        ZStack {
+            Color.appBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: Spacing.xl) {
+                    header
+                    statistics
+                    breadSection
+                }
+                .padding(Spacing.lg)
             }
-            .padding(Spacing.lg)
         }
-        .background(Color.appBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
         .sheet(isPresented: $breadViewModel.showAddSheet) {
@@ -160,7 +162,7 @@ struct BakeryDetailView: View {
                 VStack(spacing: Spacing.md) {
                     ForEach(bakery.breads.sorted(by: { $0.eatenAt > $1.eatenAt })) { bread in
                         BreadCard(bread: bread)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            .contextMenu {
                                 Button(role: .destructive) {
                                     breadViewModel.deleteBread(bread, context: modelContext)
                                 } label: {

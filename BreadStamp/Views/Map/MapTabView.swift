@@ -20,22 +20,24 @@ struct MapTabView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            mapView
-                .navigationTitle("지도")
-                .navigationBarTitleDisplayMode(.inline)
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+                mapView
+            }
+            .navigationTitle("지도")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
     // MARK: - Views
     private var mapView: some View {
         ZStack {
-            if validBakeries.isEmpty {
+            if bakeries.isEmpty {
                 EmptyStateView(
                     icon: "map.fill",
                     title: "지도에 표시할 빵집이 없어요",
                     message: "빵집을 추가하고 위치를 설정해보세요!"
                 )
-                .background(Color.appBackground)
             } else {
                 Map(position: $cameraPosition) {
                     ForEach(validBakeries) { bakery in

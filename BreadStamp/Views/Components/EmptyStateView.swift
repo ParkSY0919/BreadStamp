@@ -47,6 +47,8 @@ struct EmptyStateView: View {
             }
         }
         .padding(.horizontal, Spacing.xxl)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.appBackground)
     }
 
     // MARK: - Views

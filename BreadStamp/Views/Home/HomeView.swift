@@ -14,13 +14,15 @@ struct HomeView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            content
-                .background(Color.appBackground)
-                .navigationTitle("스탬프북")
-                .toolbar { toolbarContent }
-                .sheet(isPresented: $viewModel.showAddSheet) {
-                    AddBakerySheet()
-                }
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+                content
+            }
+            .navigationTitle("스탬프북")
+            .toolbar { toolbarContent }
+            .sheet(isPresented: $viewModel.showAddSheet) {
+                AddBakerySheet()
+            }
         }
     }
 

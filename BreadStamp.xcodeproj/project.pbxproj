@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -44,7 +44,7 @@
 		3246FAFF45E7E0BCC6B90C04 /* Bread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bread.swift; sourceTree = "<group>"; };
 		38FE05A8CAD3ACC0C85E4947 /* AddBreadSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBreadSheet.swift; sourceTree = "<group>"; };
 		503C5B64716735B4A21536A2 /* BakeryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BakeryViewModel.swift; sourceTree = "<group>"; };
-		5C384B3C348EC83CD57EE31F /* BreadStamp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BreadStamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C384B3C348EC83CD57EE31F /* BreadStamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreadStamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634EEC3D1A37687BF4BC4C84 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		87C164B3C71857D3D498ADD6 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		909CDC3FFA8BCA6F6D3F5628 /* AchievementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementService.swift; sourceTree = "<group>"; };
@@ -231,11 +231,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-					175FD6AB8F756FD2120A6BA7 = {
-						DevelopmentTeam = "";
-					};
-				};
 			};
 			buildConfigurationList = FBAD0A3C48440A172B95C9BB /* Build configuration list for PBXProject "BreadStamp" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -247,7 +242,6 @@
 			);
 			mainGroup = 37D566A08FAE1B0C871661C2;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -432,6 +426,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = A95XXD5WT7;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BreadStamp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -449,6 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = A95XXD5WT7;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BreadStamp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
