@@ -36,42 +36,16 @@ final class ProfileViewModel {
 
             var shouldUnlock = false
 
-            // 업적 조건 체크
-            switch achievements[index].id {
-            // 빵집 방문 업적
-            case "first_bakery":
-                shouldUnlock = bakeryCount >= 1
-            case "bakery_explorer":
-                shouldUnlock = bakeryCount >= 5
-            case "bakery_master":
-                shouldUnlock = bakeryCount >= 10
-            case "bakery_legend":
-                shouldUnlock = bakeryCount >= 30
-
-            // 빵 수집 업적
-            case "first_bread":
-                shouldUnlock = breadCount >= 1
-            case "bread_collector":
-                shouldUnlock = breadCount >= 10
-            case "bread_master":
-                shouldUnlock = breadCount >= 30
-            case "bread_legend":
-                shouldUnlock = breadCount >= 100
-
-            // 카테고리 업적
-            case "category_explorer":
-                shouldUnlock = categories.count >= 3
-            case "category_master":
+            // 업적 조건 체크 (requirement enum 기반)
+            switch achievements[index].requirement {
+            case .bakeryCount(let required):
+                shouldUnlock = bakeryCount >= required
+            case .breadCount(let required):
+                shouldUnlock = breadCount >= required
+            case .allCategories:
                 shouldUnlock = categories.count >= BreadCategory.allCases.count
-
-            // 평가 업적
-            case "five_star_lover":
-                shouldUnlock = fiveStarCount >= 5
-            case "critic":
-                shouldUnlock = fiveStarCount >= 20
-
-            default:
-                break
+            case .fiveStarBreads(let required):
+                shouldUnlock = fiveStarCount >= required
             }
 
             // 업적 달성 처리

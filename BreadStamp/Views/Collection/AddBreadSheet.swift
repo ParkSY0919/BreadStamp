@@ -96,7 +96,7 @@ struct AddBreadSheet: View {
                 .onChange(of: selectedItem) { _, newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            imageData = data
+                            await MainActor.run { imageData = data }
                         }
                     }
                 }
