@@ -72,6 +72,13 @@ View는 `@Query`로 SwiftData 변경을 자동 구독하며, ViewModel은 CRUD �
 
 SwiftData `externalStorage`로 저장된 이미지는 화면에 표시할 때마다 `UIImage(data:)` 디코딩이 필요한데, LazyVGrid 스크롤 중 동일 이미지가 반복 디코딩되면서 프레임 드롭이 발생하는 문제가 있었습니다.
 
+```mermaid
+flowchart LR
+    A["이미지 요청\n(UUID 키)"] --> B{"캐시 확인"}
+    B -->|"Hit"| C["UIImage 즉시 반환"]
+    B -->|"Miss"| D["Data 디코딩"] --> E["캐시 저장\n(cost = Data 크기)"] --> C
+```
+
 **해결 방향:**
 - NSCache를 활용하여 디코딩된 UIImage를 메모리에 보관하고, 시스템 메모리 압박 시 자동으로 해제되도록 구성
 - cost 파라미터에 이미지 Data 크기를 전달하여 totalCostLimit 50MB 내에서 cost가 낮은(크기가 작은) 항목부터 우선 제거되는 방식으로 메모리를 관리
@@ -85,15 +92,27 @@ SwiftData `externalStorage`로 저장된 이미지는 화면에 표시할 때마
 
 MKLocalSearchCompleter는 `queryFragment`가 변경될 때마다 Apple 서버에 네트워크 요청을 전송하기 때문에, "서울시 강남구"를 한 글자씩 입력하면 7회의 요청이 발생하며 Geocoding API의 분당 50회 rate limit에 도달할 위험이 있었습니다.
 
+```mermaid
+sequenceDiagram
+    participant U as 사용자
+    participant T as Task
+    participant API as MKLocalSearch
+
+    U->>T: "서" 입력
+    Note over T: Task 1 시작 (300ms 대기)
+    U->>T: "울" 입력
+    Note over T: Task 1 cancel → Task 2 시작
+    U->>T: "시" 입력
+    Note over T: Task 2 cancel → Task 3 시작
+    Note over T: 300ms 경과 (추가 입력 없음)
+    T->>API: queryFragment = "서울시"
+    API-->>T: 검색 결과 반환
+```
+
 **해결 방향:**
 - `Task.sleep(300ms)` + `Task.isCancelled` 조합으로 Combine 없이 디바운스를 구현
 - 새 입력이 들어올 때마다 이전 Task를 cancel하고 교체하여, 타이핑 완료 후 최종 1회만 API를 호출
 - Swift Concurrency 단독 사용으로 외부 프레임워크 의존을 제거
-
-| 구분 | 디바운스 미적용 | 적용 후 |
-|------|---------------|---------|
-| "서울시 강남구" 입력 | 7회 요청 | 1회 요청 |
-| 분당 최대 요청 | rate limit 초과 가능 | 안전 범위 유지 |
 
 > 네트워크 요청을 약 85% 절감하고, Geocoding rate limit 초과를 방지했습니다
 
