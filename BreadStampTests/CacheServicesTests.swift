@@ -259,6 +259,116 @@ final class CacheServicesTests: XCTestCase {
         XCTAssertNil(service.image(forKey: keyB, data: nil))
     }
 
+    func test_ImageCache_memoryWarningDropsProbationaryAndShrinksProtected() {
+        let dataSize = CGSize(width: 48, height: 48)
+        let unitCost = decodedCost(for: makeImageData(color: .systemRed, size: dataSize))
+        let service = ImageCacheService(
+            totalCostLimit: unitCost * 4,
+            protectedFraction: 0.7,
+            promotionHitThreshold: 2,
+            registerMemoryWarningObserver: false
+        )
+
+        let breadA = Bread(name: "A", category: .toast, imageData: makeImageData(color: .systemRed, size: dataSize), rating: 5)
+        let breadB = Bread(name: "B", category: .toast, imageData: makeImageData(color: .systemBlue, size: dataSize), rating: 5)
+        let breadC = Bread(name: "C", category: .toast, imageData: makeImageData(color: .systemGreen, size: dataSize), rating: 5)
+
+        [breadA, breadB].forEach { bread in
+            XCTAssertNotNil(service.image(for: bread))
+            XCTAssertNotNil(service.image(for: bread))
+            XCTAssertNotNil(service.image(for: bread))
+        }
+        XCTAssertNotNil(service.image(for: breadC)) // probationary 잔류
+
+        XCTAssertEqual(service.metrics(forKey: breadA.imageCacheKey)?.segment, .protected)
+        XCTAssertEqual(service.metrics(forKey: breadB.imageCacheKey)?.segment, .protected)
+        XCTAssertEqual(service.metrics(forKey: breadC.imageCacheKey)?.segment, .probationary)
+
+        service.handleMemoryWarning()
+
+        XCTAssertNil(service.metrics(forKey: breadC.imageCacheKey))
+        XCTAssertNil(service.image(forKey: breadC.imageCacheKey, data: nil))
+        XCTAssertNil(service.metrics(forKey: breadA.imageCacheKey))
+        XCTAssertNil(service.image(forKey: breadA.imageCacheKey, data: nil))
+        XCTAssertNotNil(service.metrics(forKey: breadB.imageCacheKey))
+        XCTAssertNotNil(service.image(forKey: breadB.imageCacheKey, data: nil))
+        XCTAssertEqual(service.metrics(forKey: breadB.imageCacheKey)?.segment, .protected)
+    }
+
+    func test_ImageCache_stress_repeatedChurnMaintainsMetricInvariants() {
+        let service = ImageCacheService(
+            totalCostLimit: 1_500_000,
+            protectedFraction: 0.7,
+            promotionHitThreshold: 2,
+            registerMemoryWarningObserver: false
+        )
+
+        let entries: [(key: String, data: Data)] = (0..<24).map { index in
+            let color = UIColor(
+                hue: CGFloat(index) / 24.0,
+                saturation: 0.8,
+                brightness: 0.9,
+                alpha: 1
+            )
+            return (
+                key: "stress-\(index)",
+                data: makeImageData(color: color, size: CGSize(width: 28, height: 28))
+            )
+        }
+
+        for step in 0..<5_000 {
+            let entry = entries[step % entries.count]
+
+            if step % 53 == 0 {
+                service.invalidate(forKey: entry.key)
+            }
+
+            if step % 997 == 0 {
+                service.clearAll()
+            }
+
+            if step % 4 == 0 {
+                _ = service.image(forKey: entry.key, data: nil)
+            } else {
+                _ = service.image(forKey: entry.key, data: entry.data)
+            }
+        }
+
+        let snapshot = service.snapshot()
+        XCTAssertFalse(snapshot.isEmpty)
+        for metrics in snapshot.values {
+            XCTAssertEqual(metrics.requestCount, metrics.hitCount + metrics.missCount)
+            XCTAssertGreaterThan(metrics.requestCount, 0)
+        }
+    }
+
+    func test_ImageCache_stress_manyUniqueKeysRemainBoundedByBudget() {
+        let unitData = makeImageData(color: .systemPurple, size: CGSize(width: 32, height: 32))
+        let unitCost = decodedCost(for: unitData)
+        let service = ImageCacheService(
+            totalCostLimit: unitCost * 6,
+            protectedFraction: 0.7,
+            promotionHitThreshold: 99,
+            registerMemoryWarningObserver: false
+        )
+
+        for index in 0..<50 {
+            let color = UIColor(
+                hue: CGFloat(index % 50) / 50.0,
+                saturation: 0.7,
+                brightness: 0.85,
+                alpha: 1
+            )
+            let data = makeImageData(color: color, size: CGSize(width: 32, height: 32))
+            _ = service.image(forKey: "bulk-\(index)", data: data)
+        }
+
+        let snapshot = service.snapshot()
+        XCTAssertLessThanOrEqual(snapshot.count, 2)
+        XCTAssertNotNil(service.metrics(forKey: "bulk-49"))
+        XCTAssertNil(service.metrics(forKey: "bulk-0"))
+    }
+
     private func makeInMemoryContainer() throws -> ModelContainer {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         return try ModelContainer(
