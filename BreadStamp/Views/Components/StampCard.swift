@@ -44,10 +44,7 @@ struct StampCard: View {
     // MARK: - Views
     @ViewBuilder
     private var stampImage: some View {
-        if let uiImage = ImageCacheService.shared.image(
-            forKey: bakery.id.uuidString,
-            data: bakery.imageData
-        ) {
+        if let uiImage = ImageCacheService.shared.image(for: bakery) {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()
