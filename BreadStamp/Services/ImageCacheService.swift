@@ -111,11 +111,13 @@ final class ImageCacheService {
             return node
         }
 
-        mutating func removeAll() {
+        mutating func removeAll() -> [String] {
+            let removedKeys = Array(nodes.keys)
             nodes.removeAll()
             head = nil
             tail = nil
             totalCost = 0
+            return removedKeys
         }
 
         private mutating func unlink(_ node: Node) {
@@ -145,17 +147,38 @@ final class ImageCacheService {
     private let protectedCostLimit: Int
     private let probationaryCostLimit: Int
     private let promotionHitThreshold: Int
+    private let notificationCenter: NotificationCenter
+    private var memoryWarningObserver: NSObjectProtocol?
 
     init(
         totalCostLimit: Int = 50 * 1024 * 1024,
         protectedFraction: Double = 0.7,
-        promotionHitThreshold: Int = 2
+        promotionHitThreshold: Int = 2,
+        notificationCenter: NotificationCenter = .default,
+        registerMemoryWarningObserver: Bool = true
     ) {
         self.totalCostLimit = max(totalCostLimit, 1)
         let clampedProtectedFraction = min(max(protectedFraction, 0), 1)
         self.protectedCostLimit = max(Int(Double(self.totalCostLimit) * clampedProtectedFraction), 1)
         self.probationaryCostLimit = max(self.totalCostLimit - self.protectedCostLimit, 1)
         self.promotionHitThreshold = max(promotionHitThreshold, 1)
+        self.notificationCenter = notificationCenter
+
+        if registerMemoryWarningObserver {
+            memoryWarningObserver = notificationCenter.addObserver(
+                forName: UIApplication.didReceiveMemoryWarningNotification,
+                object: nil,
+                queue: nil
+            ) { [weak self] _ in
+                self?.handleMemoryWarning()
+            }
+        }
+    }
+
+    deinit {
+        if let memoryWarningObserver {
+            notificationCenter.removeObserver(memoryWarningObserver)
+        }
     }
 
     func image(for bakery: Bakery) -> UIImage? {
@@ -231,9 +254,29 @@ final class ImageCacheService {
     /// 전체 캐시 초기화
     func clearAll() {
         lock.lock()
-        protectedStore.removeAll()
-        probationaryStore.removeAll()
+        _ = protectedStore.removeAll()
+        _ = probationaryStore.removeAll()
         metricsByKey.removeAll()
+        lock.unlock()
+    }
+
+    /// 메모리 경고 수신 시 캐시를 공격적으로 축소한다.
+    /// - probationary: 전체 제거
+    /// - protected: 상한의 절반까지 tail 제거
+    func handleMemoryWarning() {
+        lock.lock()
+
+        let removedProbationaryKeys = probationaryStore.removeAll()
+        for key in removedProbationaryKeys {
+            metricsByKey.removeValue(forKey: key)
+        }
+
+        let protectedTrimTarget = max(protectedCostLimit / 2, 1)
+        while protectedStore.totalCost > protectedTrimTarget {
+            guard let evicted = protectedStore.removeTail() else { break }
+            metricsByKey.removeValue(forKey: evicted.key)
+        }
+
         lock.unlock()
     }
 
