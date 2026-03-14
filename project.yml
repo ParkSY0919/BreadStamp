@@ -52,6 +52,17 @@ targets:
         NSCameraUsageDescription: "빵 사진을 촬영하기 위해 카메라 권한이 필요합니다."
         NSPhotoLibraryUsageDescription: "빵 사진을 선택하기 위해 사진 라이브러리 접근 권한이 필요합니다."
 
+  BreadStampTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BreadStampTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: BreadStamp
+
 schemes:
   BreadStamp:
     build:
@@ -61,6 +72,8 @@ schemes:
       config: Debug
     test:
       config: Debug
+      targets:
+        - BreadStampTests
     profile:
       config: Release
     analyze:
