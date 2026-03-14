@@ -6,6 +6,7 @@ struct AddBreadSheet: View {
     // MARK: - Properties
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @State private var viewModel = BreadViewModel()
 
     @State private var name = ""
     @State private var selectedCategory: BreadCategory = .toast
@@ -143,18 +144,19 @@ struct AddBreadSheet: View {
 
     // MARK: - Methods
     private func addBread() {
-        let bread = Bread(
+        viewModel.addBread(
             name: name,
             category: selectedCategory,
             imageData: imageData,
             rating: rating,
             memo: memo.isEmpty ? nil : memo,
-            bakery: bakery
+            bakery: bakery,
+            context: modelContext
         )
 
-        modelContext.insert(bread)
-
-        dismiss()
+        if viewModel.errorMessage == nil {
+            dismiss()
+        }
     }
 }
 
@@ -162,4 +164,3 @@ struct AddBreadSheet: View {
     AddBreadSheet()
         .modelContainer(for: [Bread.self, Bakery.self], inMemory: true)
 }
-

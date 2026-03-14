@@ -34,6 +34,7 @@ final class BreadViewModel {
             )
             context.insert(bread)
             try context.save()
+            CacheInvalidationCoordinator.invalidateStatistics()
             showAddSheet = false
         } catch {
             errorMessage = "빵 추가에 실패했습니다."
@@ -56,6 +57,9 @@ final class BreadViewModel {
         errorMessage = nil
 
         do {
+            let previousImageCacheKey = bread.imageCacheKey
+            let shouldInvalidateStatistics = bread.rating != rating || bread.category != category
+
             bread.name = name
             bread.category = category
             bread.imageData = imageData
@@ -63,6 +67,14 @@ final class BreadViewModel {
             bread.memo = memo
             bread.updatedAt = Date()
             try context.save()
+
+            if previousImageCacheKey != bread.imageCacheKey {
+                CacheInvalidationCoordinator.invalidateImage(forKey: previousImageCacheKey)
+            }
+
+            if shouldInvalidateStatistics {
+                CacheInvalidationCoordinator.invalidateStatistics()
+            }
         } catch {
             errorMessage = "빵 정보 수정에 실패했습니다."
         }
@@ -76,8 +88,11 @@ final class BreadViewModel {
         errorMessage = nil
 
         do {
+            let imageCacheKey = bread.imageCacheKey
             context.delete(bread)
             try context.save()
+            CacheInvalidationCoordinator.invalidateStatistics()
+            CacheInvalidationCoordinator.invalidateImage(forKey: imageCacheKey)
         } catch {
             errorMessage = "빵 삭제에 실패했습니다."
         }
