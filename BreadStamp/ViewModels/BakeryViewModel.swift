@@ -36,6 +36,7 @@ final class BakeryViewModel {
             )
             context.insert(bakery)
             try context.save()
+            CacheInvalidationCoordinator.invalidateStatistics()
             showAddSheet = false
         } catch {
             errorMessage = "빵집 추가에 실패했습니다."
@@ -74,8 +75,11 @@ final class BakeryViewModel {
         errorMessage = nil
 
         do {
+            let imageCacheKey = bakery.imageCacheKey
             context.delete(bakery)
             try context.save()
+            CacheInvalidationCoordinator.invalidateStatistics()
+            CacheInvalidationCoordinator.invalidateImage(forKey: imageCacheKey)
             showDeleteAlert = false
             bakeryToDelete = nil
         } catch {
@@ -91,6 +95,7 @@ final class BakeryViewModel {
             bakery.isFavorite.toggle()
             bakery.updatedAt = Date()
             try context.save()
+            CacheInvalidationCoordinator.invalidateStatistics()
         } catch {
             errorMessage = "즐겨찾기 설정에 실패했습니다."
         }
